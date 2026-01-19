@@ -110,11 +110,11 @@ func _set_animation(animation_name: String) -> void:
 	if current_animation != animation_name:
 		current_animation = animation_name
 		# Use AnimationTree state machine playback
-		var playback = animation_tree.get("parameters/playback")
-		if playback and playback is AnimationNodeStateMachinePlayback:
+		var playback: AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
+		if playback:
 			# Check if the animation exists before attempting to play it
 			if animation_player.has_animation(animation_name):
 				playback.travel(animation_name)
 			else:
 				# Animation doesn't exist, log a warning but don't crash
-				push_warning("Animation '%s' not found in AnimationPlayer" % animation_name)
+				push_warning("Animation '{0}' not found in AnimationPlayer".format([animation_name]))
