@@ -14,6 +14,7 @@ var current_waypoint_index: int = 0
 @export var wait_distance: float = 3.0  # Distance to wait for player
 @export var next_waypoint_distance: float = 0.5  # Distance to consider waypoint reached
 @export var gravity: float = 9.8
+@export var min_movement_distance: float = 0.01  # Minimum distance for movement/rotation calculations
 
 # Behavior parameters
 @export var look_back_interval: float = 3.0  # How often to look back at player
@@ -98,7 +99,7 @@ func _move_to_waypoint(waypoint: Node3D, delta: float) -> void:
 	direction.y = 0  # Keep movement horizontal
 	
 	# Check if we're already at the waypoint position (avoid normalizing zero vector)
-	if direction.length() < 0.01:
+	if direction.length() < min_movement_distance:
 		velocity.x = 0
 		velocity.z = 0
 		return
@@ -129,7 +130,7 @@ func _look_at_player() -> void:
 	direction.y = 0
 	
 	# Check if player is at the same position (avoid normalizing zero vector)
-	if direction.length() < 0.01:
+	if direction.length() < min_movement_distance:
 		return
 	
 	direction = direction.normalized()  # Normalize after zeroing Y
