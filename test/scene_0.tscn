@@ -1,14 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfa24shc6ofpn"]
+[gd_scene load_steps=11 format=3 uid="uid://cfa24shc6ofpn"]
 
 [ext_resource type="PackedScene" uid="uid://c3y4vh0xkqpvr" path="res://spirit.tscn" id="1_b8xk5"]
 [ext_resource type="PackedScene" uid="uid://bsxnl4w6ynvy8" path="res://black_cat.tscn" id="2_vqx8g"]
 [ext_resource type="PackedScene" uid="uid://cq7k2y8m2xqg5" path="res://clown_body.tscn" id="3_3n6ch"]
+[ext_resource type="PackedScene" uid="uid://c1234567890ab" path="res://hud.tscn" id="4_hud"]
+[ext_resource type="Script" path="res://game_manager.gd" id="5_game"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1"]
 size = Vector2(20, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+size = Vector3(20, 4, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1"]
 size = Vector3(1, 2, 1)
@@ -33,7 +38,8 @@ fog_aerial_perspective = 0.5
 fog_height = 2.0
 fog_height_density = 0.5
 
-[node name="Scene0" type="Node3D"]
+[node name="Scene0" type="Node"]
+script = ExtResource("5_game")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1")
@@ -99,3 +105,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 3)
 
 [node name="Waypoint4" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -3)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="BoundaryWalls" type="Node3D" parent="."]
+
+[node name="WallNorth" type="StaticBody3D" parent="BoundaryWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoundaryWalls/WallNorth"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="WallSouth" type="StaticBody3D" parent="BoundaryWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoundaryWalls/WallSouth"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="WallEast" type="StaticBody3D" parent="BoundaryWalls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoundaryWalls/WallEast"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="WallWest" type="StaticBody3D" parent="BoundaryWalls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -10, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoundaryWalls/WallWest"]
+shape = SubResource("BoxShape3D_2")
+

@@ -12,6 +12,11 @@ extends CharacterBody3D
 # Camera rotation
 var camera_rotation: Vector2 = Vector2.ZERO
 
+# Monologue state
+var has_moved: bool = false
+var initial_monologue: String = "I woke up… but not really."
+var hud: CanvasLayer = null
+
 func _ready() -> void:
 	# Capture mouse for first-person controls
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -49,6 +54,11 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
+	# Check if player has moved for the first time
+	if not has_moved and direction.length() > 0 and hud:
+		has_moved = true
+		_trigger_initial_monologue()
+	
 	# Apply movement
 	if direction:
 		velocity.x = direction.x * speed
@@ -58,3 +68,15 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, speed)
 	
 	move_and_slide()
+
+func _trigger_initial_monologue() -> void:
+	## Trigger the initial internal monologue
+	if hud:
+		hud.show_dialogue(initial_monologue)
+		# Hide the monologue after a few seconds
+		await get_tree().create_timer(3.0).timeout
+		hud.hide_dialogue()
+
+func set_hud(hud_node: CanvasLayer) -> void:
+	## Set the HUD reference
+	hud = hud_node
