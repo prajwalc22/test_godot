@@ -481,5 +481,3 @@ If you encounter any issues:
    - assets/character/Animations/idle.fbx (+ .import)
    - assets/character/Animations/run.fbx (+ .import)
    - assets/character/Animations/jump.fbx (+ .import)
-   - hud.tscn
-   - project.godot

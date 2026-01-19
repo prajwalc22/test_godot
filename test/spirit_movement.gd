@@ -74,13 +74,17 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
-		_set_animation("run")
+		# Only set run animation if on ground
+		if is_on_floor():
+			_set_animation("run")
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
-		_set_animation("idle")
+		# Only set idle animation if on ground
+		if is_on_floor():
+			_set_animation("idle")
 	
-	# Handle jump animation
+	# Handle jump animation (overrides other animations when airborne)
 	if not is_on_floor():
 		_set_animation("jump")
 	
@@ -100,9 +104,17 @@ func set_hud(hud_node: CanvasLayer) -> void:
 
 func _set_animation(animation_name: String) -> void:
 	## Set the current animation if it has changed
-	if animation_tree and current_animation != animation_name:
+	if not animation_tree or not animation_player:
+		return  # Animation system not available, skip
+	
+	if current_animation != animation_name:
 		current_animation = animation_name
 		# Use AnimationTree state machine playback
 		var playback = animation_tree.get("parameters/playback")
-		if playback:
-			playback.travel(animation_name)
+		if playback and playback is AnimationNodeStateMachinePlayback:
+			# Check if the animation exists before attempting to play it
+			if animation_player.has_animation(animation_name):
+				playback.travel(animation_name)
+			else:
+				# Animation doesn't exist, log a warning but don't crash
+				push_warning("Animation '%s' not found in AnimationPlayer" % animation_name)
