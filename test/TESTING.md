@@ -1,12 +1,21 @@
-# Testing Instructions for Scene 0 - Narrative Mechanics Update
+# Testing Instructions for Scene 0 - FBX Model Integration & Narrative Mechanics
 
 ## Prerequisites
 - Godot 4.2 or later installed on Windows
 - This project cloned/downloaded to your local machine
 - A mouse for first-person camera controls
 
-## Overview of New Mechanics
-This update adds narrative-driven mechanics including:
+## Overview of Recent Updates
+
+### FBX Player Model Integration (Latest)
+This update integrates the `characterMedium.fbx` player model with animation support:
+- Replaced placeholder capsule mesh with detailed 3D character model
+- Added animation system with idle, run, and jump animations
+- Implemented AnimationTree for smooth animation transitions
+- See `FBX_MODEL_INTEGRATION.md` for detailed integration documentation
+
+### Narrative Mechanics
+The game includes narrative-driven mechanics:
 - Initial monologue when player starts moving
 - Interactive clown's body with dialogue choices
 - Event-driven cat spawning after player realization
@@ -21,6 +30,39 @@ This update adds narrative-driven mechanics including:
 3. Navigate to the `test` folder in this repository
 4. Select the `project.godot` file
 5. Click "Import & Edit"
+
+**First-time Import Notes:**
+- Godot will automatically import the FBX files (characterMedium.fbx and animations)
+- The import process may take a few moments
+- Check the Output console for any import errors
+- If you see FBX import warnings, they are usually safe to ignore
+
+### 1a. Verify FBX Model Import (NEW - First Time Only)
+Before running the scene, verify the FBX files imported correctly:
+1. In the FileSystem panel, navigate to `res://assets/character/Model/`
+2. You should see `characterMedium.fbx` with a small scene icon
+3. Navigate to `res://assets/character/Animations/`
+4. You should see `idle.fbx`, `run.fbx`, and `jump.fbx` with scene icons
+5. If any files show error icons, check the Output console for details
+
+**If FBX files don't import:**
+- Ensure the .import files are present next to each .fbx file
+- Try reimporting by right-clicking the FBX file → Reimport
+- Check that you're using Godot 4.2 or later
+- See `FBX_MODEL_INTEGRATION.md` for detailed troubleshooting
+
+### 1b. Configure Animation Tree (NEW - First Time Only)
+The AnimationTree needs manual configuration in the editor:
+1. Open `spirit.tscn` in the Scene panel
+2. Select the `AnimationTree` node
+3. In the Inspector, you'll see the AnimationNodeStateMachine
+4. **Note**: The animations will need to be manually connected to the state machine nodes
+5. For detailed instructions, see `FBX_MODEL_INTEGRATION.md` section "Required Manual Steps"
+
+**Quick Setup (if animations don't work):**
+- The animation system is prepared but may need editor configuration
+- Basic movement will work even if animations don't play
+- Full animation setup instructions are in `FBX_MODEL_INTEGRATION.md`
 
 ### 2. Run Scene 0
 1. Once the project opens, the main scene (`scene_0.tscn`) should be loaded automatically
@@ -40,6 +82,65 @@ Test the new first-person perspective:
 - Camera rotation feels responsive
 - ESC toggles between captured mouse (for playing) and visible cursor (for UI)
 - First-person view centered at eye level
+
+### 3a. Verify Character Model Appearance (NEW - FBX Model)
+Check that the player character model is displaying correctly:
+1. Start the game (F5)
+2. The game uses first-person perspective, so you won't see your own body
+3. To verify the model loaded:
+   - **Option A**: Look down - you might see parts of the character (hands, body)
+   - **Option B**: In the editor, open Scene view while game is running and look at the Spirit node
+   - **Option C**: Temporarily add a third-person camera to see the full model
+
+**Expected Behavior:**
+- Character model from `characterMedium.fbx` should be loaded (not a capsule)
+- Model should be properly positioned at ground level
+- No missing textures or distorted geometry
+- Model scale should look appropriate for the environment
+
+**If you see a capsule instead:**
+- The FBX model may not have imported correctly
+- Check the Output console for FBX import errors
+- Verify the .import files exist for the FBX files
+- Try reimporting the FBX files
+- See `FBX_MODEL_INTEGRATION.md` for troubleshooting
+
+### 3b. Test Character Animations (NEW - FBX Model)
+Verify the animation system is working:
+
+**Idle Animation:**
+1. Start the game and don't press any keys
+2. The character should play the idle animation
+3. You won't see this from first-person view, but check the console for animation errors
+
+**Run Animation:**
+1. Press WASD keys to move in any direction
+2. The character should transition to the run animation
+3. Movement should feel smooth and natural
+
+**Jump Animation:**
+1. Press Space Bar to jump
+2. While in the air, the jump animation should play
+3. Upon landing, should transition back to idle or run
+
+**Expected Behavior:**
+- Smooth transitions between idle, run, and jump animations
+- No animation stuttering or popping
+- Animations loop correctly (idle and run)
+- No console errors about missing animations
+
+**If animations don't play:**
+- Basic movement will still work, just without animations
+- The AnimationTree may need manual configuration in the editor
+- Check the Output console for animation-related errors
+- See `FBX_MODEL_INTEGRATION.md` section "Required Manual Steps in Godot Editor"
+- Verify AnimationPlayer has animations loaded in the Inspector
+
+**Animation Debugging:**
+- Open the AnimationPlayer node while game is running
+- Check if animations are listed in the Animation dropdown
+- Verify AnimationTree is Active in the Inspector
+- Check that "parameters/playback" is set correctly
 
 ### 4. Test Player Movement
 Test the Spirit (player) movement with first-person controls:
@@ -230,6 +331,51 @@ Test potential issues:
 
 ## Troubleshooting
 
+### FBX Model Issues (NEW)
+
+#### Model doesn't appear / still see capsule placeholder
+- Check that FBX file imported successfully in FileSystem panel
+- Look for `characterMedium.fbx` with a scene icon in `res://assets/character/Model/`
+- Check Output console for FBX import errors
+- Try reimporting: Right-click FBX file → Reimport
+- Verify `.import` file exists next to the FBX file
+- Open `spirit.tscn` and check if CharacterModel node exists
+- Ensure CharacterModel is visible (not hidden in Scene panel)
+
+#### Model is wrong size / floating / clipping through ground
+- Open `spirit.tscn` in editor
+- Select the CharacterModel node
+- Adjust the scale (typical range: 0.5 to 2.0)
+- Adjust the Y position to align with ground
+- May need to adjust CollisionShape3D to match new size
+
+#### Animations don't play / character frozen
+- Open `spirit.tscn` and select AnimationTree node
+- Verify AnimationTree is Active in Inspector
+- Check that AnimationPlayer has animations in the Animation list
+- Animations may need manual setup in AnimationTree state machine
+- See `FBX_MODEL_INTEGRATION.md` for detailed animation setup
+- Check Output console for animation-related errors
+- Try opening AnimationPlayer while game is running to debug
+
+#### Animation transitions are jerky / wrong animations play
+- AnimationTree state machine may need configuration
+- Check transition settings between animation states
+- Verify state machine connections in AnimationTree
+- Console may show errors about missing animation states
+
+#### Character model has missing textures / appears white or pink
+- FBX file may not include embedded textures
+- Check Material overrides in MeshInstance3D
+- Textures may need to be manually assigned
+- This is expected if FBX doesn't include materials
+
+#### Camera height is wrong / can't see properly
+- Open `spirit.tscn` and select Camera3D node
+- Adjust Y position (currently 1.4, typical range: 1.2 to 1.8)
+- Height depends on actual character model size
+- Test in-game after each adjustment
+
 ### Scene doesn't load
 - Ensure you opened the correct `project.godot` file from the `test` folder
 - Check that all `.tscn` and `.gd` files are present in the test folder
@@ -295,24 +441,30 @@ Test potential issues:
 - Smooth 60 FPS on modern hardware
 - No stuttering or lag
 - Responsive input for both movement and camera
-- Fog effects should not significantly impact performance
+- Fog effects and character model should not significantly impact performance
+- Animation system adds minimal overhead
 
 ## Next Steps After Testing
 Once you've verified everything works:
-1. Replace placeholder shapes with actual 3D models
-2. Add animations for the cat (walk, idle, look back)
-3. Implement sound effects (meowing, footsteps, ambient sounds)
-4. Add particle effects for the cat's glow
-5. Create more complex waypoint paths
-6. Implement progression triggers at waypoints
-7. Add UI elements (objectives, hints)
+1. ~~Replace placeholder shapes with actual 3D models~~ ✓ **COMPLETED**: Player now uses FBX model
+2. Fine-tune character model scale and collision shape
+3. Configure AnimationTree state machine for smooth transitions
+4. Add more character animations (walking, landing, turning, interactions)
+5. Add animations for the cat (walk, idle, look back)
+6. Implement sound effects (meowing, footsteps, ambient sounds)
+7. Add particle effects for the cat's glow
+8. Apply materials and ghost-like shaders to player model
+9. Create more complex waypoint paths
+10. Implement progression triggers at waypoints
+11. Add UI elements (objectives, hints)
 
 ## Report Issues
 If you encounter any issues:
 1. Note the exact steps that caused the issue
 2. Check the Godot console for error messages
 3. Take a screenshot if possible
-4. Verify all files are present:
+4. Check `FBX_MODEL_INTEGRATION.md` for model-specific troubleshooting
+5. Verify all files are present:
    - scene_0.tscn
    - spirit.tscn
    - black_cat.tscn
@@ -322,5 +474,12 @@ If you encounter any issues:
    - clown_body_interaction.gd
    - game_manager.gd
    - hud.gd
+   - hud.tscn
+   - project.godot
+   - FBX_MODEL_INTEGRATION.md
+   - assets/character/Model/characterMedium.fbx (+ .import)
+   - assets/character/Animations/idle.fbx (+ .import)
+   - assets/character/Animations/run.fbx (+ .import)
+   - assets/character/Animations/jump.fbx (+ .import)
    - hud.tscn
    - project.godot
