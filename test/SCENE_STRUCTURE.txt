@@ -1,0 +1,44 @@
+Scene 0 Node Structure
+======================
+
+Scene0 (Node3D) - Root node
+├── Ground (StaticBody3D)
+│   ├── MeshInstance3D (PlaneMesh 20x20)
+│   └── CollisionShape3D (BoxShape3D)
+│
+├── Spirit (CharacterBody3D) - Player at position (0, 1, 0)
+│   ├── MeshInstance3D (CapsuleMesh - white/placeholder)
+│   ├── CollisionShape3D (CapsuleShape3D)
+│   └── Camera3D (Third-person view, 8 units up and back)
+│
+├── BlackCat (CharacterBody3D) - Follower at position (-3, 0.5, 0)
+│   ├── MeshInstance3D (BoxMesh - placeholder)
+│   └── CollisionShape3D (BoxShape3D)
+│   └── [Script: follower.gd - follows Spirit]
+│
+├── ClownBody (StaticBody3D) - Stationary at position (5, 0, 0)
+│   ├── MeshInstance3D (CapsuleMesh - rotated/laying down)
+│   └── CollisionShape3D (CapsuleShape3D)
+│
+├── DirectionalLight3D (with shadows enabled)
+│
+├── ForestPlaceholder1 (StaticBody3D) at position (-5, 1, -5)
+│   └── MeshInstance3D (BoxMesh - tree placeholder)
+│
+├── ForestPlaceholder2 (StaticBody3D) at position (6, 1, -6)
+│   └── MeshInstance3D (BoxMesh - tree placeholder)
+│
+├── ForestPlaceholder3 (StaticBody3D) at position (-7, 1, 5)
+│   └── MeshInstance3D (BoxMesh - tree placeholder)
+│
+└── ForestPlaceholder4 (StaticBody3D) at position (7, 1, 6)
+    └── MeshInstance3D (BoxMesh - tree placeholder)
+
+Key Features:
+-------------
+- Player (Spirit) uses arrow keys/WASD for movement
+- Black Cat follows the player when distance > 2 units
+- Camera follows the player from a third-person perspective
+- Ground plane provides collision surface
+- Forest placeholders create an eerie environment layout
+- All shapes are placeholders ready for asset replacement

@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfa24shc6ofpn"]
+
+[ext_resource type="PackedScene" uid="uid://c3y4vh0xkqpvr" path="res://spirit.tscn" id="1_b8xk5"]
+[ext_resource type="PackedScene" uid="uid://bsxnl4w6ynvy8" path="res://black_cat.tscn" id="2_vqx8g"]
+[ext_resource type="PackedScene" uid="uid://cq7k2y8m2xqg5" path="res://clown_body.tscn" id="3_3n6ch"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1"]
+size = Vector2(20, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1"]
+size = Vector3(1, 2, 1)
+
+[node name="Scene0" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_1")
+
+[node name="Spirit" parent="." instance=ExtResource("1_b8xk5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="BlackCat" parent="." instance=ExtResource("2_vqx8g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, 0)
+target = NodePath("../Spirit")
+
+[node name="ClownBody" parent="." instance=ExtResource("3_3n6ch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 5, 0)
+shadow_enabled = true
+
+[node name="ForestPlaceholder1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ForestPlaceholder1"]
+mesh = SubResource("BoxMesh_1")
+
+[node name="ForestPlaceholder2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ForestPlaceholder2"]
+mesh = SubResource("BoxMesh_1")
+
+[node name="ForestPlaceholder3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, 5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ForestPlaceholder3"]
+mesh = SubResource("BoxMesh_1")
+
+[node name="ForestPlaceholder4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1, 6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ForestPlaceholder4"]
+mesh = SubResource("BoxMesh_1")
