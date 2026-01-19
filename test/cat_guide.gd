@@ -96,13 +96,20 @@ func _physics_process(delta: float) -> void:
 func _move_to_waypoint(waypoint: Node3D, delta: float) -> void:
 	var direction = (waypoint.global_position - global_position)
 	direction.y = 0  # Keep movement horizontal
+	
+	# Check if we're already at the waypoint position (avoid normalizing zero vector)
+	if direction.length() < 0.01:
+		velocity.x = 0
+		velocity.z = 0
+		return
+	
 	direction = direction.normalized()  # Normalize after zeroing Y
 	
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
 	
 	# Face movement direction when not looking back
-	if not is_looking_back and direction.length() > 0.01:
+	if not is_looking_back:
 		var target_rotation = atan2(direction.x, direction.z)
 		rotation.y = lerp_angle(rotation.y, target_rotation, delta * 5.0)
 
@@ -120,20 +127,25 @@ func _look_at_player() -> void:
 	
 	var direction = (player_node.global_position - global_position)
 	direction.y = 0
+	
+	# Check if player is at the same position (avoid normalizing zero vector)
+	if direction.length() < 0.01:
+		return
+	
 	direction = direction.normalized()  # Normalize after zeroing Y
 	
-	if direction.length() > 0.01:
-		var target_rotation = atan2(direction.x, direction.z)
-		rotation.y = target_rotation
+	var target_rotation = atan2(direction.x, direction.z)
+	rotation.y = target_rotation
 
 func _idle_behavior(delta: float) -> void:
 	# Cat has reached all waypoints, just wait for player
 	velocity.x = move_toward(velocity.x, 0, move_speed)
 	velocity.z = move_toward(velocity.z, 0, move_speed)
 	
-	# Occasionally look at player
+	# Periodically look at player
 	if look_back_timer >= look_back_interval:
 		_look_at_player()
+		look_back_timer = 0.0  # Reset timer after looking
 
 func _meow() -> void:
 	# Placeholder for meow sound effect
