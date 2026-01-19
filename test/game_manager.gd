@@ -6,6 +6,9 @@ extends Node
 @onready var cat: CharacterBody3D = $BlackCat
 @onready var clown_body_interaction: Area3D = $ClownBody/InteractionArea
 
+# Audio placeholder (can be connected to AudioStreamPlayer when audio files are available)
+var wind_sound_enabled: bool = false
+
 # Game state
 var cat_spawned: bool = false
 
@@ -25,9 +28,20 @@ func _ready() -> void:
 
 func _on_clown_body_interaction_completed() -> void:
 	"""Handle completion of clown body interaction"""
+	# Trigger subtle environment change (faint wind)
+	_trigger_environment_change()
+	
 	# Spawn the cat after a brief moment
 	await get_tree().create_timer(1.0).timeout
 	_spawn_cat()
+
+func _trigger_environment_change() -> void:
+	"""Trigger subtle environment changes like wind sound"""
+	wind_sound_enabled = true
+	# Placeholder for wind sound effect
+	# When audio file is available, play it here:
+	# $WindAudioPlayer.play()
+	print("Environment change: faint wind sound triggered (placeholder)")
 
 func _spawn_cat() -> void:
 	"""Spawn the cat and set the follow objective"""
@@ -39,7 +53,9 @@ func _spawn_cat() -> void:
 	cat.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Play a small sound effect (placeholder - sound would go here)
-	# For now, we'll just show the objective
+	# $CatSpawnAudioPlayer.play()
+	print("Cat spawned with sound effect (placeholder)")
 	
 	# Set the objective
 	hud.set_objective("Follow the cat.")
+
