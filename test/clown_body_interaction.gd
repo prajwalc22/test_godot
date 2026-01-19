@@ -42,7 +42,7 @@ func _process(_delta: float) -> void:
 		_hide_proximity_message()
 
 func _show_proximity_message() -> void:
-	"""Show the initial proximity message"""
+	## Show the initial proximity message
 	proximity_message_shown = true
 	hud.show_dialogue(proximity_message)
 	
@@ -52,17 +52,17 @@ func _show_proximity_message() -> void:
 		_show_dialogue_options()
 
 func _hide_proximity_message() -> void:
-	"""Hide proximity message when player moves away"""
+	## Hide proximity message when player moves away
 	proximity_message_shown = false
 	if not has_interacted:
 		hud.hide_dialogue()
 
 func _show_dialogue_options() -> void:
-	"""Show dialogue options for the player to choose"""
+	## Show dialogue options for the player to choose
 	hud.show_dialogue("", dialogue_options, _on_dialogue_option_selected)
 
 func _on_dialogue_option_selected(option: String) -> void:
-	"""Handle dialogue option selection"""
+	## Handle dialogue option selection
 	# Show realization text regardless of choice
 	hud.show_dialogue(realization_text)
 	has_interacted = true
@@ -73,7 +73,7 @@ func _on_dialogue_option_selected(option: String) -> void:
 	_complete_interaction()
 
 func _complete_interaction() -> void:
-	"""Complete the interaction and trigger environment changes"""
+	## Complete the interaction and trigger environment changes
 	interaction_enabled = false
 	interaction_completed.emit()
 	
@@ -81,20 +81,20 @@ func _complete_interaction() -> void:
 	# For now, we'll just emit the signal for other systems to respond
 
 func _on_body_entered(body: Node3D) -> void:
-	"""Track when player enters the area"""
+	## Track when player enters the area
 	if body.name == "Spirit":
 		player = body
 
 func _on_body_exited(body: Node3D) -> void:
-	"""Track when player exits the area"""
+	## Track when player exits the area
 	if body.name == "Spirit":
 		player = null
 		_hide_proximity_message()
 
 func set_hud(hud_node: CanvasLayer) -> void:
-	"""Set the HUD reference"""
+	## Set the HUD reference
 	hud = hud_node
 
 func set_player(player_node: Node3D) -> void:
-	"""Set the player reference"""
+	## Set the player reference
 	player = player_node

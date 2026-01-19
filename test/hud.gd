@@ -15,12 +15,12 @@ func _ready() -> void:
 	dialogue_panel.visible = false
 	
 func set_objective(text: String) -> void:
-	"""Update the objective display"""
+	## Update the objective display
 	objective_label.text = text
 	objective_label.visible = text != ""
 
 func show_dialogue(text: String, options: Array = [], callback: Callable = Callable()) -> void:
-	"""Show dialogue with optional choices"""
+	## Show dialogue with optional choices
 	dialogue_text.text = text
 	dialogue_callback = callback
 	
@@ -42,11 +42,11 @@ func show_dialogue(text: String, options: Array = [], callback: Callable = Calla
 	dialogue_panel.visible = true
 
 func hide_dialogue() -> void:
-	"""Hide the dialogue panel"""
+	## Hide the dialogue panel
 	dialogue_panel.visible = false
 
 func _on_option_selected(option: String) -> void:
-	"""Handle dialogue option selection"""
+	## Handle dialogue option selection
 	if dialogue_callback.is_valid():
 		dialogue_callback.call(option)
 	hide_dialogue()

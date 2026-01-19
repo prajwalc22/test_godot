@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _trigger_initial_monologue() -> void:
-	"""Trigger the initial internal monologue"""
+	## Trigger the initial internal monologue
 	if hud:
 		hud.show_dialogue(initial_monologue)
 		# Hide the monologue after a few seconds
@@ -78,5 +78,5 @@ func _trigger_initial_monologue() -> void:
 		hud.hide_dialogue()
 
 func set_hud(hud_node: CanvasLayer) -> void:
-	"""Set the HUD reference"""
+	## Set the HUD reference
 	hud = hud_node

@@ -27,7 +27,7 @@ func _ready() -> void:
 		clown_body_interaction.interaction_completed.connect(_on_clown_body_interaction_completed)
 
 func _on_clown_body_interaction_completed() -> void:
-	"""Handle completion of clown body interaction"""
+	## Handle completion of clown body interaction
 	# Trigger subtle environment change (faint wind)
 	_trigger_environment_change()
 	
@@ -36,7 +36,7 @@ func _on_clown_body_interaction_completed() -> void:
 	_spawn_cat()
 
 func _trigger_environment_change() -> void:
-	"""Trigger subtle environment changes like wind sound"""
+	## Trigger subtle environment changes like wind sound
 	wind_sound_enabled = true
 	# Placeholder for wind sound effect
 	# When audio file is available, play it here:
@@ -44,7 +44,7 @@ func _trigger_environment_change() -> void:
 	print("Environment change: faint wind sound triggered (placeholder)")
 
 func _spawn_cat() -> void:
-	"""Spawn the cat and set the follow objective"""
+	## Spawn the cat and set the follow objective
 	if cat_spawned:
 		return
 	
