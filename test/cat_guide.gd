@@ -84,7 +84,7 @@ func _physics_process(delta: float) -> void:
 		look_back_time += delta
 		_look_at_player()
 		if look_back_time >= look_back_duration:
-			is_looking_back = False
+			is_looking_back = false
 	
 	# Placeholder for meow sound
 	if meow_timer >= meow_interval:
