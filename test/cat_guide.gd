@@ -13,6 +13,7 @@ var current_waypoint_index: int = 0
 @export var move_speed: float = 3.0
 @export var wait_distance: float = 3.0  # Distance to wait for player
 @export var next_waypoint_distance: float = 0.5  # Distance to consider waypoint reached
+@export var gravity: float = 9.8
 
 # Behavior parameters
 @export var look_back_interval: float = 3.0  # How often to look back at player
@@ -41,6 +42,10 @@ func _physics_process(delta: float) -> void:
 	if not player_node or waypoint_nodes.is_empty():
 		return
 	
+	# Apply gravity
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	
 	# Update timers
 	look_back_timer += delta
 	meow_timer += delta
@@ -48,6 +53,7 @@ func _physics_process(delta: float) -> void:
 	# Check if we've reached all waypoints
 	if current_waypoint_index >= waypoint_nodes.size():
 		_idle_behavior(delta)
+		move_and_slide()
 		return
 	
 	var current_waypoint = waypoint_nodes[current_waypoint_index]
@@ -78,7 +84,7 @@ func _physics_process(delta: float) -> void:
 		look_back_time += delta
 		_look_at_player()
 		if look_back_time >= look_back_duration:
-			is_looking_back = false
+			is_looking_back = False
 	
 	# Placeholder for meow sound
 	if meow_timer >= meow_interval:
@@ -88,8 +94,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _move_to_waypoint(waypoint: Node3D, delta: float) -> void:
-	var direction = (waypoint.global_position - global_position).normalized()
+	var direction = (waypoint.global_position - global_position)
 	direction.y = 0  # Keep movement horizontal
+	direction = direction.normalized()  # Normalize after zeroing Y
 	
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
@@ -111,8 +118,9 @@ func _look_at_player() -> void:
 	if not player_node:
 		return
 	
-	var direction = (player_node.global_position - global_position).normalized()
+	var direction = (player_node.global_position - global_position)
 	direction.y = 0
+	direction = direction.normalized()  # Normalize after zeroing Y
 	
 	if direction.length() > 0.01:
 		var target_rotation = atan2(direction.x, direction.z)
