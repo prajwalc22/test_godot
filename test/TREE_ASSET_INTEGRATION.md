@@ -6,7 +6,7 @@ This document describes the integration of tree assets from `test/assets/trees` 
 ## Changes Made
 
 ### 1. Asset Selection
-Selected 8 diverse tree models from the available 64+ tree assets:
+Selected 10 diverse tree models from the available 64+ tree assets:
 - `tree_pineTallA_detailed.glb` - Tall detailed pine tree
 - `tree_oak.glb` - Oak tree for variety
 - `tree_detailed.glb` - High-quality detailed tree
@@ -15,6 +15,8 @@ Selected 8 diverse tree models from the available 64+ tree assets:
 - `tree_default.glb` - Standard tree model
 - `tree_pineSmallA.glb` - Smaller pine tree
 - `tree_tall.glb` - Tall generic tree
+- `tree_oak_dark.glb` - Dark oak variant for variety
+- `tree_detailed_dark.glb` - Dark detailed tree variant
 
 ### 2. Tree Placement
 Replaced 4 placeholder boxes with 10 strategically placed trees:
@@ -34,8 +36,8 @@ Replaced 4 placeholder boxes with 10 strategically placed trees:
 6. **Tree6** at (3, 0, -8) - Default tree (1.4x scale)
 7. **Tree7** at (-2, 0, 7) - Pine small A (1.1x scale)
 8. **Tree8** at (8, 0, -3) - Tall tree (1.7x scale)
-9. **Tree9** at (-6, 0, -8) - Oak tree (1.2x scale)
-10. **Tree10** at (4, 0, 8) - Detailed tree (1.5x scale)
+9. **Tree9** at (-6, 0, -8) - Oak dark variant (1.2x scale)
+10. **Tree10** at (4, 0, 8) - Detailed dark variant (1.5x scale)
 
 ### 3. Positioning Strategy
 - Trees placed around the perimeter of the 20x20 unit ground plane
@@ -72,10 +74,11 @@ Added 3 OmniLight3D nodes for subtle ambient lighting around trees:
 ### 5. Technical Details
 
 #### Scene File Changes
-- Updated `load_steps` from 11 to 19 (added 8 tree resources)
-- Added 8 `ExtResource` entries for tree GLB files
+- Updated `load_steps` from 11 to 21 (added 10 tree resources)
+- Added 10 `ExtResource` entries for tree GLB files
 - Removed unused `BoxMesh_1` subresource
 - Changed placeholder nodes from `StaticBody3D` to `Node3D` (trees don't need collision)
+- Used dark tree variants (oak_dark, detailed_dark) for visual variety
 
 #### Performance Considerations
 - GLB files are efficiently loaded by Godot 4.2

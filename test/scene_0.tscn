@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cfa24shc6ofpn"]
+[gd_scene load_steps=21 format=3 uid="uid://cfa24shc6ofpn"]
 
 [ext_resource type="PackedScene" uid="uid://c3y4vh0xkqpvr" path="res://spirit.tscn" id="1_b8xk5"]
 [ext_resource type="PackedScene" uid="uid://bsxnl4w6ynvy8" path="res://black_cat.tscn" id="2_vqx8g"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" path="res://assets/trees/tree_default.glb" id="11_tree6"]
 [ext_resource type="PackedScene" path="res://assets/trees/tree_pineSmallA.glb" id="12_tree7"]
 [ext_resource type="PackedScene" path="res://assets/trees/tree_tall.glb" id="13_tree8"]
+[ext_resource type="PackedScene" path="res://assets/trees/tree_oak_dark.glb" id="14_tree9"]
+[ext_resource type="PackedScene" path="res://assets/trees/tree_detailed_dark.glb" id="15_tree10"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1"]
 size = Vector2(20, 20)
@@ -120,12 +122,12 @@ transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 8, 0, -3)
 [node name="Tree9" type="Node3D" parent="."]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -6, 0, -8)
 
-[node name="tree_oak" parent="Tree9" instance=ExtResource("7_tree2")]
+[node name="tree_oak_dark" parent="Tree9" instance=ExtResource("14_tree9")]
 
 [node name="Tree10" type="Node3D" parent="."]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 4, 0, 8)
 
-[node name="tree_detailed" parent="Tree10" instance=ExtResource("8_tree3")]
+[node name="tree_detailed_dark" parent="Tree10" instance=ExtResource("15_tree10")]
 
 [node name="AmbientLight1" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -5)
