@@ -28,9 +28,9 @@ func _physics_process(delta: float) -> void:
 		# Move towards player
 		velocity.x = direction.x * follow_speed
 		velocity.z = direction.z * follow_speed
-		
-		move_and_slide()
 	else:
 		# Stop when close enough
 		velocity.x = move_toward(velocity.x, 0, follow_speed)
 		velocity.z = move_toward(velocity.z, 0, follow_speed)
+	
+	move_and_slide()
