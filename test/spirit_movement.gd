@@ -9,6 +9,10 @@ extends CharacterBody3D
 # Camera reference
 @onready var camera: Camera3D = $Camera3D
 
+# Animation references
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 # Camera rotation
 var camera_rotation: Vector2 = Vector2.ZERO
 
@@ -17,9 +21,16 @@ var has_moved: bool = false
 var initial_monologue: String = "I woke up… but not really."
 var hud: CanvasLayer = null
 
+# Animation state
+var current_animation: String = "idle"
+
 func _ready() -> void:
 	# Capture mouse for first-person controls
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	# Initialize animation system if available
+	if animation_tree:
+		animation_tree.active = true
 
 func _input(event: InputEvent) -> void:
 	# Handle mouse movement for camera look
@@ -63,9 +74,19 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
+		# Only set run animation if on ground
+		if is_on_floor():
+			_set_animation("run")
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
+		# Only set idle animation if on ground
+		if is_on_floor():
+			_set_animation("idle")
+	
+	# Handle jump animation (overrides other animations when airborne)
+	if not is_on_floor():
+		_set_animation("jump")
 	
 	move_and_slide()
 
@@ -80,3 +101,20 @@ func _trigger_initial_monologue() -> void:
 func set_hud(hud_node: CanvasLayer) -> void:
 	## Set the HUD reference
 	hud = hud_node
+
+func _set_animation(animation_name: String) -> void:
+	## Set the current animation if it has changed
+	if not animation_tree or not animation_player:
+		return  # Animation system not available, skip
+	
+	if current_animation != animation_name:
+		current_animation = animation_name
+		# Use AnimationTree state machine playback
+		var playback: AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
+		if playback:
+			# Check if the animation exists before attempting to play it
+			if animation_player.has_animation(animation_name):
+				playback.travel(animation_name)
+			else:
+				# Animation doesn't exist, log a warning but don't crash
+				push_warning("Animation '{0}' not found in AnimationPlayer".format([animation_name]))

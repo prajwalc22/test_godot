@@ -60,7 +60,8 @@ This is Scene 0 of a Godot 4 game project featuring a first-person narrative exp
 
 #### 1. Spirit of the Clown (Player)
 - **Type**: First-person controllable character
-- **Shape**: Capsule mesh (placeholder)
+- **Model**: 3D character model from `characterMedium.fbx` (replaces capsule placeholder)
+- **Animations**: Idle, Run, and Jump animations with smooth transitions
 - **Script**: `spirit_movement.gd`
 - **Controls**: 
   - WASD or Arrow Keys to move
@@ -68,6 +69,7 @@ This is Scene 0 of a Godot 4 game project featuring a first-person narrative exp
   - Space bar to jump
   - ESC to toggle mouse capture
   - Speed: 5 units/second
+- **Animation System**: AnimationTree with state machine for fluid animation transitions
 
 #### 2. Black Cat (Guide)
 - **Type**: AI-controlled guide
@@ -95,18 +97,28 @@ This is Scene 0 of a Godot 4 game project featuring a first-person narrative exp
 ```
 test/
 ├── scene_0.tscn              # Main scene with all narrative mechanics
-├── spirit.tscn               # First-person player character scene
+├── spirit.tscn               # First-person player character scene with FBX model
 ├── black_cat.tscn            # Guide character scene with glow effect
 ├── clown_body.tscn           # Interactive body scene with Area3D
 ├── hud.tscn                  # UI scene with dialogue and objectives
-├── spirit_movement.gd        # First-person movement, camera, and monologue
+├── spirit_movement.gd        # First-person movement, camera, animation, and monologue
 ├── cat_guide.gd              # AI guide behavior script
 ├── clown_body_interaction.gd # Proximity detection and dialogue system
 ├── game_manager.gd           # Coordinates narrative events and mechanics
 ├── hud.gd                    # UI system for dialogue and objectives
 ├── follower.gd               # (Legacy - replaced by cat_guide.gd)
+├── FBX_MODEL_INTEGRATION.md  # Documentation for FBX player model integration
 ├── project.godot             # Godot project configuration
-└── icon.svg                  # Default Godot icon
+├── icon.svg                  # Default Godot icon
+└── assets/
+    ├── character/
+    │   ├── Model/
+    │   │   └── characterMedium.fbx        # Player character 3D model
+    │   └── Animations/
+    │       ├── idle.fbx                   # Idle animation
+    │       ├── run.fbx                    # Running animation
+    │       └── jump.fbx                   # Jump animation
+    └── trees/                             # Tree models for environment
 ```
 
 ## How to Run
@@ -159,7 +171,7 @@ The black cat serves as your guide through the mysterious environment:
 
 The following enhancements are planned for future development:
 
-- Replace placeholder shapes with actual 3D models and animations
+- ~~Replace placeholder shapes with actual 3D models and animations~~ ✓ **COMPLETED**: Player character now uses FBX model with animations
 - Add sound effects for narrative events:
   - Wind sound when realization occurs
   - Cat spawn sound effect
@@ -175,6 +187,8 @@ The following enhancements are planned for future development:
 - Enhance the pathfinding with more complex routes
 - Add voice acting for key dialogue moments
 - Implement save/load system for narrative progress
+- Add more character animations (walking, landing, turning, interactions)
+- Apply materials and ghost-like shaders to the player model
 
 ## Technical Details
 
@@ -182,6 +196,8 @@ The following enhancements are planned for future development:
 - **Rendering**: Forward Plus with fog and atmospheric effects
 - **Physics**: Built-in 3D physics with CharacterBody3D nodes
 - **Camera**: First-person camera with mouse look
+- **Character Model**: FBX-based 3D model with skeletal animations
+- **Animation System**: AnimationTree with state machine for smooth transitions
 - **AI**: Custom waypoint-based pathfinding for the guide character
 - **UI System**: CanvasLayer-based HUD with dialogue and objective display
 - **Interaction**: Area3D-based proximity detection for narrative triggers
@@ -193,14 +209,16 @@ The following enhancements are planned for future development:
 This project demonstrates advanced Godot concepts:
 
 1. **First-Person Controller**: Mouse capture, camera rotation, and WASD movement
-2. **Narrative Systems**: Event-driven storytelling with dialogue and choices
-3. **Proximity Detection**: Area3D for interaction triggers
-4. **UI Programming**: Dynamic dialogue system with button generation
-5. **AI Pathfinding**: Custom waypoint navigation with waiting behavior
-6. **Event-Driven Architecture**: Signal-based game manager coordinating mechanics
-7. **Atmospheric Effects**: Fog, lighting adjustments, and environment settings
-8. **Visual Effects**: Emission materials for glowing objects
-9. **State Management**: AI behavior states (moving, waiting, looking) and interaction states
+2. **3D Model Integration**: FBX import and scene instancing
+3. **Animation System**: AnimationTree with state machines for character animations
+4. **Narrative Systems**: Event-driven storytelling with dialogue and choices
+5. **Proximity Detection**: Area3D for interaction triggers
+6. **UI Programming**: Dynamic dialogue system with button generation
+7. **AI Pathfinding**: Custom waypoint navigation with waiting behavior
+8. **Event-Driven Architecture**: Signal-based game manager coordinating mechanics
+9. **Atmospheric Effects**: Fog, lighting adjustments, and environment settings
+10. **Visual Effects**: Emission materials for glowing objects
+11. **State Management**: AI behavior states (moving, waiting, looking) and interaction states
 
 ## Credits
 

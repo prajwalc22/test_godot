@@ -1,21 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3y4vh0xkqpvr"]
+[gd_scene load_steps=6 format=3 uid="uid://c3y4vh0xkqpvr"]
 
 [ext_resource type="Script" path="res://spirit_movement.gd" id="1_qk8jr"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
-radius = 0.3
-height = 1.5
+[ext_resource type="PackedScene" uid="uid://c1h2m3e4d5i6u7m8" path="res://assets/character/Model/characterMedium.fbx" id="2_model"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.3
 height = 1.5
 
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1"]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_1"]
+
 [node name="Spirit" type="CharacterBody3D"]
 script = ExtResource("1_qk8jr")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-mesh = SubResource("CapsuleMesh_1")
+[node name="CharacterModel" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
@@ -23,3 +23,11 @@ shape = SubResource("CapsuleShape3D_1")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_1")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_1")
