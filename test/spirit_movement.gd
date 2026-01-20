@@ -31,6 +31,9 @@ func _ready() -> void:
 	# Initialize animation system if available
 	if animation_tree:
 		animation_tree.active = true
+	
+	# Diagnostic: Check animation system setup
+	_validate_animation_system()
 
 func _input(event: InputEvent) -> void:
 	# Handle mouse movement for camera look
@@ -118,3 +121,28 @@ func _set_animation(animation_name: String) -> void:
 			else:
 				# Animation doesn't exist, log a warning but don't crash
 				push_warning("Animation '{0}' not found in AnimationPlayer".format([animation_name]))
+
+func _validate_animation_system() -> void:
+	## Validate the animation system setup and provide diagnostic information
+	var has_issues := false
+	
+	if not animation_player:
+		push_warning("AnimationPlayer node not found. Player will function but without animations.")
+		has_issues = true
+	else:
+		var animation_list := animation_player.get_animation_list()
+		if animation_list.size() == 0:
+			push_warning("AnimationPlayer has no animations loaded. FBX animations need manual setup in Godot Editor.")
+			push_warning("See FBX_MODEL_INTEGRATION.md for setup instructions.")
+			has_issues = true
+		else:
+			# Animation system is properly configured
+			print("Animation system validated successfully.")
+			print("Available animations: ", animation_list)
+	
+	if not animation_tree:
+		push_warning("AnimationTree node not found. Player will function but without smooth animation transitions.")
+		has_issues = true
+	
+	if has_issues:
+		print("Player character will function normally despite animation setup issues.")
