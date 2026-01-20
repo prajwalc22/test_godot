@@ -129,17 +129,20 @@ func _validate_animation_system() -> void:
 	if not animation_player:
 		push_warning("AnimationPlayer node not found. Player will function but without animations.")
 		has_issues = true
-	elif animation_player.get_animation_list().size() == 0:
-		push_warning("AnimationPlayer has no animations loaded. FBX animations need manual setup in Godot Editor.")
-		push_warning("See FBX_MODEL_INTEGRATION.md for setup instructions.")
-		has_issues = true
+	else:
+		var animation_list := animation_player.get_animation_list()
+		if animation_list.size() == 0:
+			push_warning("AnimationPlayer has no animations loaded. FBX animations need manual setup in Godot Editor.")
+			push_warning("See FBX_MODEL_INTEGRATION.md for setup instructions.")
+			has_issues = true
+		else:
+			# Animation system is properly configured
+			print("Animation system validated successfully.")
+			print("Available animations: ", animation_list)
 	
 	if not animation_tree:
 		push_warning("AnimationTree node not found. Player will function but without smooth animation transitions.")
 		has_issues = true
 	
-	if not has_issues:
-		print("Animation system validated successfully.")
-		print("Available animations: ", animation_player.get_animation_list())
-	else:
+	if has_issues:
 		print("Player character will function normally despite animation setup issues.")
